@@ -103,165 +103,164 @@ namespace FIT5032_Assignment_Portfolio.Controllers
             }
             return RedirectToAction("Index");
         }
-    
-    // GET: Find
-    public ActionResult Find()
-    {
-        string dateParam = "";
-        string date = Request.QueryString["date"];
-        if (date != "" && date != null)
+
+        // GET: Find
+        public ActionResult Find()
         {
-            dateParam += "where Date ='" + date + "'";
-            ViewBag.date = date;
+            string dateParam = "";
+            string date = Request.QueryString["date"];
+            if (date != "" && date != null)
+            {
+                dateParam += "where Date ='" + date + "'";
+                ViewBag.date = date;
+            }
+
+            string neighParam = "";
+            string neighbourhood = Request.QueryString["neigh"];
+            if (neighbourhood != "" && neighbourhood != null)
+            {
+                neighParam += "where UPPER(h.neighbourhood) like UPPER('%" + neighbourhood + "%')";
+                ViewBag.neighbourhood = neighbourhood;
+            }
+
+            string query = "select distinct h.* from ( " +
+                "               select r.Id, r.HotelId, r.Availability, count(b.Id) book " +
+                "                   from Rooms r left join " +
+                "                   (select * from Bookings " + dateParam + ") b on r.Id = b.RoomId " +
+                "               group by r.Id, r.HotelId, r.Availability) avail " +
+                "           join Hotels h on avail.HotelId = h.Id " + neighParam;
+
+            IEnumerable<Hotel> data = db.Database.SqlQuery<Hotel>(query);
+            return View(data.ToList());
+
+            //return View(db.Hotels.ToList());
         }
 
-        string neighParam = "";
-        string neighbourhood = Request.QueryString["neigh"];
-        if (neighbourhood != "" && neighbourhood != null)
+        // GET: Hotels
+        public ActionResult Index()
         {
-            neighParam += "where UPPER(h.neighbourhood) like UPPER('%" + neighbourhood + "%')";
-            ViewBag.neighbourhood = neighbourhood;
+            string userId = User.Identity.GetUserId();
+
+            if (User.IsInRole("Vendor"))
+            {
+                return View(db.Hotels.Where(u => u.UserId.Equals(userId))
+                .ToList());
+            }
+            else
+            {
+                return View(db.Hotels
+                .ToList());
+            }
         }
 
-        string query = "select distinct h.* from ( " +
-            "               select r.Id, r.HotelId, r.Availability, count(b.Id) book " +
-            "                   from Rooms r left join " +
-            "                   (select * from Bookings " + dateParam + ") b on r.Id = b.RoomId " +
-            "               group by r.Id, r.HotelId, r.Availability) avail " +
-            "           join Hotels h on avail.HotelId = h.Id " + neighParam;
-
-        IEnumerable<Hotel> data = db.Database.SqlQuery<Hotel>(query);
-        return View(data.ToList());
-
-        //return View(db.Hotels.ToList());
-    }
-
-    // GET: Hotels
-    public ActionResult Index()
-    {
-        string userId = User.Identity.GetUserId();
-
-        if (User.IsInRole("Vendor"))
+        // GET: Hotels/Details/5
+        public ActionResult Details(int? id)
         {
-            return View(db.Hotels.Where(u => u.UserId.Equals(userId))
-            .ToList());
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Hotel hotel = db.Hotels.Find(id);
+            if (hotel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(hotel);
         }
-        else
+
+        // GET: Hotels/Create
+        public ActionResult Create()
         {
-            return View(db.Hotels
-            .ToList());
+            ViewBag.UserName = new SelectList(context.Users
+                                            .ToList(), "Id", "UserName");
+
+            return View();
         }
-    }
 
-    // GET: Hotels/Details/5
-    public ActionResult Details(int? id)
-    {
-        if (id == null)
+        // POST: Hotels/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,HotelName,Description,HotelStar,Longitude,Latitude,UserId,Neighbourhood")] Hotel hotel)
         {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (ModelState.IsValid)
+            {
+                db.Hotels.Add(hotel);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(hotel);
         }
-        Hotel hotel = db.Hotels.Find(id);
-        if (hotel == null)
+
+        // GET: Hotels/Edit/5
+        public ActionResult Edit(int? id)
         {
-            return HttpNotFound();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Hotel hotel = db.Hotels.Find(id);
+            if (hotel == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.UserName = User.Identity.GetUserName();
+
+            return View(hotel);
         }
-        return View(hotel);
-    }
 
-    // GET: Hotels/Create
-    public ActionResult Create()
-    {
-        ViewBag.UserName = new SelectList(context.Users
-                                        .ToList(), "Id", "UserName");
-
-        return View();
-    }
-
-    // POST: Hotels/Create
-    // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-    // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Create([Bind(Include = "Id,HotelName,Description,HotelStar,Longitude,Latitude,UserId,Neighbourhood")] Hotel hotel)
-    {
-        if (ModelState.IsValid)
+        // POST: Hotels/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,HotelName,Description,HotelStar,Longitude,Latitude,UserId,Neighbourhood")] Hotel hotel)
         {
-            db.Hotels.Add(hotel);
+            if (ModelState.IsValid)
+            {
+                db.Entry(hotel).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(hotel);
+        }
+
+        // GET: Hotels/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Hotel hotel = db.Hotels.Find(id);
+            if (hotel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(hotel);
+        }
+
+        // POST: Hotels/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Hotel hotel = db.Hotels.Find(id);
+            db.Hotels.Remove(hotel);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        return View(hotel);
-    }
-
-    // GET: Hotels/Edit/5
-    public ActionResult Edit(int? id)
-    {
-        if (id == null)
+        protected override void Dispose(bool disposing)
         {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
-        Hotel hotel = db.Hotels.Find(id);
-        if (hotel == null)
-        {
-            return HttpNotFound();
-        }
-
-        ViewBag.UserName = new SelectList(context.Users
-                            .ToList(), "Id", "UserName");
-
-        return View(hotel);
     }
-
-    // POST: Hotels/Edit/5
-    // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-    // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Edit([Bind(Include = "Id,HotelName,Description,HotelStar,Longitude,Latitude,UserId,Neighbourhood")] Hotel hotel)
-    {
-        if (ModelState.IsValid)
-        {
-            db.Entry(hotel).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-        return View(hotel);
-    }
-
-    // GET: Hotels/Delete/5
-    public ActionResult Delete(int? id)
-    {
-        if (id == null)
-        {
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        }
-        Hotel hotel = db.Hotels.Find(id);
-        if (hotel == null)
-        {
-            return HttpNotFound();
-        }
-        return View(hotel);
-    }
-
-    // POST: Hotels/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public ActionResult DeleteConfirmed(int id)
-    {
-        Hotel hotel = db.Hotels.Find(id);
-        db.Hotels.Remove(hotel);
-        db.SaveChanges();
-        return RedirectToAction("Index");
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            db.Dispose();
-        }
-        base.Dispose(disposing);
-    }
-}
 }

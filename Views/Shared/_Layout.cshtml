@@ -32,7 +32,10 @@
                     {
                         <li>@Html.ActionLink("Rooms", "Index", "Rooms")</li>
                     }
-                    <li>@Html.ActionLink("Bookings", "Index", "Bookings1")</li>
+                    @if (User.IsInRole("Customer") || User.IsInRole("Vendor"))
+                    {
+                        <li>@Html.ActionLink("Bookings", "Index", "Bookings1")</li>
+                    }
                     <li>@Html.ActionLink("FInd Accommodation", "Find", "Hotels")</li>
                     @if (User.IsInRole("Vendor"))
                     {
@@ -66,6 +69,7 @@
                 selector: '#mailContent'
             });
 
+            $("#HotelStar").rating();
             $("#Rating").rating();
 
             var date_input = $('input[name="date"]');

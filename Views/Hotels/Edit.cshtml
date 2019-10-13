@@ -36,7 +36,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.HotelStar, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.HotelStar, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.HotelStar, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.HotelStar, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -68,8 +68,7 @@
     <div class="form-group">
         @Html.Label("UserId", new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @*@Html.DropDownList("User")*@
-            @Html.DropDownList("UserId", (SelectList)ViewBag.UserName, " ")
+            @ViewBag.UserName
         </div>
     </div>
 
