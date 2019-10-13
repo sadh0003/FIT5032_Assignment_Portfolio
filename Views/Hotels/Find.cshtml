@@ -1,0 +1,55 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<FIT5032_Assignment_Portfolio.Models.Hotel>
+
+<form>
+    <h3>Filter</h3> Date <input type="text" style="width: 90px;" id="date" name="date" value="@ViewBag.date" /> Neighbourhood <input type="text" style="width: 200px;" id="Neighbour" />
+    <input type="button" value="Search" onclick="window.location.href = '/Hotels/Find?date=' + document.getElementById('date').value + '&neigh=' + document.getElementById('Neighbour').value " />
+</form>
+<br />
+
+<table class="table">
+    <tr>
+        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.HotelName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HotelStar)
+        </th>
+        <th>
+            Location
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="~/images/pic_@(item.Id).jpeg" width="240" />
+            </td>
+            <td>
+                <h3>@Html.DisplayFor(modelItem => item.HotelName)</h3>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HotelStar)
+            </td>
+            <td>
+                @Html.ActionLink("Show Map", "Map", "Hotels", new { id = item.Id }, null)
+            </td>
+            <td>
+                @Html.ActionLink("Book", "Book", "Bookings1", new { hotelId = item.Id }, null)
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,35 @@
+﻿@model FIT5032_Assignment_Portfolio.Models.HotelFacility
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>HotelFacility</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Facility)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Facility)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hotel.HotelName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hotel.HotelName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

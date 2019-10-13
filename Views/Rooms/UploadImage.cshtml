@@ -1,0 +1,59 @@
+﻿@model FIT5032_Assignment_Portfolio.Models.Room
+
+@{
+    ViewBag.Title = "UploadImage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>UploadImage</h2>
+
+@{ WebImage photo = null;
+    var newFileName = "";
+    var imagePath = "";
+    var displayImage = "";
+
+    if (IsPost)
+    {
+        photo = WebImage.GetImageFromRequest();
+        if (photo != null)
+        {
+            //newFileName = Path.GetFileName(photo.FileName);
+            newFileName = "picRoom_" + Request.Url.Segments.Last() + ".jpeg";
+
+            imagePath = @"images\" + newFileName;
+
+            displayImage = "/images/" + newFileName ;
+
+            photo.Save(@"~\" + imagePath);
+        }
+    }
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Upload</title>
+</head>
+<body>
+    <form action="" method="post" enctype="multipart/form-data">
+        <fieldset>
+            <legend> Upload Image </legend>
+            <label for="Image">Image</label>
+            <input type="file" name="Image" />
+            <br />
+            <input type="submit" value="Upload"/>
+            <a href="/Rooms">Back</a>
+        </fieldset>
+    </form>
+
+    <h1>Uploaded Image</h1>
+    @if (imagePath != "")
+    {
+        <div class="result">
+            <img src="@displayImage" alt="image" width="250" />
+
+        </div>
+    }
+</body>
+</html>

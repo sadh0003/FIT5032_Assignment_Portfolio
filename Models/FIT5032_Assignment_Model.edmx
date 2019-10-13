@@ -1,0 +1,488 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FIT5032_Assignment_Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bookings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Review" Type="nvarchar(max)" />
+          <Property Name="Rating" Type="smallint" />
+          <Property Name="RoomId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Date" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="HotelFacilities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Facility" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Hotels">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HotelName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="HotelStar" Type="smallint" Nullable="false" />
+          <Property Name="Longitude" Type="decimal" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="Latitude" Type="decimal" Precision="18" Scale="8" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar(max)" />
+          <Property Name="Neighbourhood" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PicName" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Mail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Receiver" Type="varchar(max)" Nullable="false" />
+          <Property Name="Content" Type="varchar(max)" Nullable="false" />
+          <Property Name="Subject" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Rooms">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Availability" Type="bigint" Nullable="false" />
+          <Property Name="Rate" Type="smallint" Nullable="false" />
+          <Property Name="HotelId" Type="int" Nullable="false" />
+          <Property Name="PicName" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="RoomSpecs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Specification" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="RoomId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserTypeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_HotelHotelFacility">
+          <End Role="Hotels" Type="Self.Hotels" Multiplicity="1" />
+          <End Role="HotelFacilities" Type="Self.HotelFacilities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hotels">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HotelFacilities">
+              <PropertyRef Name="HotelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HotelRoom">
+          <End Role="Hotels" Type="Self.Hotels" Multiplicity="1" />
+          <End Role="Rooms" Type="Self.Rooms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hotels">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rooms">
+              <PropertyRef Name="HotelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomBooking">
+          <End Role="Rooms" Type="Self.Rooms" Multiplicity="1" />
+          <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rooms">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bookings">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomRoomSpec">
+          <End Role="Rooms" Type="Self.Rooms" Multiplicity="1" />
+          <End Role="RoomSpecs" Type="Self.RoomSpecs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rooms">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoomSpecs">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserTypeUser">
+          <End Role="UserTypes" Type="Self.UserTypes" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="UserTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FIT5032_Assignment_ModelStoreContainer">
+          <EntitySet Name="Bookings" EntityType="Self.Bookings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HotelFacilities" EntityType="Self.HotelFacilities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hotels" EntityType="Self.Hotels" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mail" EntityType="Self.Mail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rooms" EntityType="Self.Rooms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoomSpecs" EntityType="Self.RoomSpecs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTypes" EntityType="Self.UserTypes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_HotelHotelFacility" Association="Self.FK_HotelHotelFacility">
+            <End Role="Hotels" EntitySet="Hotels" />
+            <End Role="HotelFacilities" EntitySet="HotelFacilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HotelRoom" Association="Self.FK_HotelRoom">
+            <End Role="Hotels" EntitySet="Hotels" />
+            <End Role="Rooms" EntitySet="Rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomBooking" Association="Self.FK_RoomBooking">
+            <End Role="Rooms" EntitySet="Rooms" />
+            <End Role="Bookings" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomRoomSpec" Association="Self.FK_RoomRoomSpec">
+            <End Role="Rooms" EntitySet="Rooms" />
+            <End Role="RoomSpecs" EntitySet="RoomSpecs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTypeUser" Association="Self.FK_UserTypeUser">
+            <End Role="UserTypes" EntitySet="UserTypes" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="FIT5032_Assignment_Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="FIT5032_Assignment_ModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Rooms" EntityType="FIT5032_Assignment_Model.Room" />
+          <EntitySet Name="Hotels" EntityType="FIT5032_Assignment_Model.Hotel" />
+          <AssociationSet Name="HotelRoom" Association="FIT5032_Assignment_Model.HotelRoom">
+            <End Role="Hotel" EntitySet="Hotels" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <EntitySet Name="RoomSpecs" EntityType="FIT5032_Assignment_Model.RoomSpec" />
+          <AssociationSet Name="RoomRoomSpec" Association="FIT5032_Assignment_Model.RoomRoomSpec">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="RoomSpec" EntitySet="RoomSpecs" />
+          </AssociationSet>
+          <EntitySet Name="HotelFacilities" EntityType="FIT5032_Assignment_Model.HotelFacility" />
+          <AssociationSet Name="HotelHotelFacility" Association="FIT5032_Assignment_Model.HotelHotelFacility">
+            <End Role="Hotel" EntitySet="Hotels" />
+            <End Role="HotelFacility" EntitySet="HotelFacilities" />
+          </AssociationSet>
+          <EntitySet Name="Bookings" EntityType="FIT5032_Assignment_Model.Booking" />
+          <AssociationSet Name="RoomBooking" Association="FIT5032_Assignment_Model.RoomBooking">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
+          <EntitySet Name="Users" EntityType="FIT5032_Assignment_Model.User" />
+          <EntitySet Name="UserTypes" EntityType="FIT5032_Assignment_Model.UserType" />
+          <AssociationSet Name="UserTypeUser" Association="FIT5032_Assignment_Model.UserTypeUser">
+            <End Role="UserType" EntitySet="UserTypes" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="Mails" EntityType="FIT5032_Assignment_Model.Mail" />
+        </EntityContainer>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Availability" Type="Int64" Nullable="false" />
+          <Property Name="Rate" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Hotel" Relationship="FIT5032_Assignment_Model.HotelRoom" FromRole="Room" ToRole="Hotel" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RoomSpecs" Relationship="FIT5032_Assignment_Model.RoomRoomSpec" FromRole="Room" ToRole="RoomSpec" />
+          <NavigationProperty Name="Bookings" Relationship="FIT5032_Assignment_Model.RoomBooking" FromRole="Room" ToRole="Booking" />
+          <Property Name="PicName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Hotel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HotelName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="HotelStar" Type="Int16" Nullable="false" />
+          <Property Name="Longitude" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <Property Name="Latitude" Type="Decimal" Nullable="false" Precision="18" Scale="8" />
+          <NavigationProperty Name="Rooms" Relationship="FIT5032_Assignment_Model.HotelRoom" FromRole="Hotel" ToRole="Room" />
+          <NavigationProperty Name="HotelFacilities" Relationship="FIT5032_Assignment_Model.HotelHotelFacility" FromRole="Hotel" ToRole="HotelFacility" />
+          <Property Name="UserId" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Neighbourhood" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="PicName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="HotelRoom">
+          <End Type="FIT5032_Assignment_Model.Hotel" Role="Hotel" Multiplicity="1" />
+          <End Type="FIT5032_Assignment_Model.Room" Role="Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hotel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="HotelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RoomSpec">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Specification" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Room" Relationship="FIT5032_Assignment_Model.RoomRoomSpec" FromRole="RoomSpec" ToRole="Room" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="RoomRoomSpec">
+          <End Type="FIT5032_Assignment_Model.Room" Role="Room" Multiplicity="1" />
+          <End Type="FIT5032_Assignment_Model.RoomSpec" Role="RoomSpec" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoomSpec">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="HotelFacility">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Facility" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Hotel" Relationship="FIT5032_Assignment_Model.HotelHotelFacility" FromRole="HotelFacility" ToRole="Hotel" />
+          <Property Name="HotelId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="HotelHotelFacility">
+          <End Type="FIT5032_Assignment_Model.Hotel" Role="Hotel" Multiplicity="1" />
+          <End Type="FIT5032_Assignment_Model.HotelFacility" Role="HotelFacility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hotel">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HotelFacility">
+              <PropertyRef Name="HotelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Review" Type="String" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Rating" Type="Int16" Nullable="true" />
+          <NavigationProperty Name="Room" Relationship="FIT5032_Assignment_Model.RoomBooking" FromRole="Booking" ToRole="Room" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Date" Type="DateTime" Precision="7" />
+        </EntityType>
+        <Association Name="RoomBooking">
+          <End Type="FIT5032_Assignment_Model.Room" Role="Room" Multiplicity="1" />
+          <End Type="FIT5032_Assignment_Model.Booking" Role="Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Mobile" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="UserType" Relationship="FIT5032_Assignment_Model.UserTypeUser" FromRole="User" ToRole="UserType" />
+          <Property Name="UserTypeId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Users" Relationship="FIT5032_Assignment_Model.UserTypeUser" FromRole="UserType" ToRole="User" />
+        </EntityType>
+        <Association Name="UserTypeUser">
+          <End Type="FIT5032_Assignment_Model.UserType" Role="UserType" Multiplicity="1" />
+          <End Type="FIT5032_Assignment_Model.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Mail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Receiver" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="FIT5032_Assignment_ModelStoreContainer" CdmEntityContainer="FIT5032_Assignment_ModelContainer">
+    <EntitySetMapping Name="Rooms">
+      <EntityTypeMapping TypeName="IsTypeOf(FIT5032_Assignment_Model.Room)">
+        <MappingFragment StoreEntitySet="Rooms">
+          <ScalarProperty Name="PicName" ColumnName="PicName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="RoomName" ColumnName="RoomName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Availability" ColumnName="Availability" />
+          <ScalarProperty Name="Rate" ColumnName="Rate" />
+          <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Hotels">
+      <EntityTypeMapping TypeName="IsTypeOf(FIT5032_Assignment_Model.Hotel)">
+        <MappingFragment StoreEntitySet="Hotels">
+          <ScalarProperty Name="PicName" ColumnName="PicName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="HotelName" ColumnName="HotelName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="HotelStar" ColumnName="HotelStar" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Neighbourhood" ColumnName="Neighbourhood" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RoomSpecs">
+      <EntityTypeMapping TypeName="IsTypeOf(FIT5032_Assignment_Model.RoomSpec)">
+        <MappingFragment StoreEntitySet="RoomSpecs">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Specification" ColumnName="Specification" />
+          <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HotelFacilities">
+      <EntityTypeMapping TypeName="IsTypeOf(FIT5032_Assignment_Model.HotelFacility)">
+        <MappingFragment StoreEntitySet="HotelFacilities">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Facility" ColumnName="Facility" />
+          <ScalarProperty Name="HotelId" ColumnName="HotelId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Bookings">
+      <EntityTypeMapping TypeName="IsTypeOf(FIT5032_Assignment_Model.Booking)">
+        <MappingFragment StoreEntitySet="Bookings">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Review" ColumnName="Review" />
+          <ScalarProperty Name="Rating" ColumnName="Rating" />
+          <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(FIT5032_Assignment_Model.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="UserTypeId" ColumnName="UserTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserTypes">
+      <EntityTypeMapping TypeName="IsTypeOf(FIT5032_Assignment_Model.UserType)">
+        <MappingFragment StoreEntitySet="UserTypes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+          <EntitySetMapping Name="Mails">
+            <EntityTypeMapping TypeName="FIT5032_Assignment_Model.Mail">
+              <MappingFragment StoreEntitySet="Mail">
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Receiver" ColumnName="Receiver" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

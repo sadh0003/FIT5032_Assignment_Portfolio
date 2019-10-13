@@ -1,0 +1,41 @@
+﻿@model IEnumerable<FIT5032_Assignment_Portfolio.Models.Mail>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Compose Mail", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Receiver)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Subject)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Content)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Receiver)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subject)
+            </td>
+            <td>
+                @Html.Raw(item.Content)
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("GoBook", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Hotels", "Index", "Hotels")</li>
+                    }
+                    @if (User.IsInRole("Vendor"))
+                    {
+                        <li>@Html.ActionLink("Rooms", "Index", "Rooms")</li>
+                    }
+                    <li>@Html.ActionLink("Bookings", "Index", "Bookings1")</li>
+                    <li>@Html.ActionLink("FInd Accommodation", "Find", "Hotels")</li>
+                    @if (User.IsInRole("Vendor"))
+                    {
+                        <li>@Html.ActionLink("Send Email", "Index", "Mails")</li>
+                    }
+
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/Scripts/bootstrap-rating.min.js"></script>
+
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            tinymce.init({
+                selector: '#mailContent'
+            });
+
+            $("#Rating").rating();
+
+            var date_input = $('input[name="date"]');
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            var options = {
+                format: 'yyyy/mm/dd',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+            };
+            date_input.datepicker(options).datepicker();
+            //$("#DatePicker").datepicker();
+
+            $("#RoomId").change(function () {
+                $("#RoomImg").attr("src", "/images/picRoom_" + document.getElementById("RoomId").value + ".jpeg")
+
+                $("#Value").val($(this).find("option:selected").val());
+            });
+        })
+
+    </script>
+
+</body>
+</html>

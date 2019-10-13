@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fa2ba868b213426bbc4a0248b6a29290" Name="Diagram1" ZoomLevel="109" >
+        <EntityTypeShape EntityType="FIT5032_Assignment_Model.Room" Width="1.5" PointX="2.75" PointY="1" />
+        <EntityTypeShape EntityType="FIT5032_Assignment_Model.Hotel" Width="1.5" PointX="4.875" PointY="1" />
+        <AssociationConnector Association="FIT5032_Assignment_Model.HotelRoom" />
+        <EntityTypeShape EntityType="FIT5032_Assignment_Model.RoomSpec" Width="1.5" PointX="0.5" PointY="1.75" />
+        <AssociationConnector Association="FIT5032_Assignment_Model.RoomRoomSpec" />
+        <EntityTypeShape EntityType="FIT5032_Assignment_Model.HotelFacility" Width="1.5" PointX="7.625" PointY="1.375" />
+        <AssociationConnector Association="FIT5032_Assignment_Model.HotelHotelFacility" />
+        <EntityTypeShape EntityType="FIT5032_Assignment_Model.Booking" Width="1.5" PointX="2.75" PointY="4.25" />
+        <AssociationConnector Association="FIT5032_Assignment_Model.RoomBooking" />
+        <EntityTypeShape EntityType="FIT5032_Assignment_Model.User" Width="1.5" PointX="5.25" PointY="4.25" />
+        <EntityTypeShape EntityType="FIT5032_Assignment_Model.UserType" Width="1.5" PointX="7.5" PointY="4.5" />
+        <AssociationConnector Association="FIT5032_Assignment_Model.UserTypeUser" />
+        <EntityTypeShape EntityType="FIT5032_Assignment_Model.Mail" Width="1.5" PointX="0.625" PointY="4.625" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
