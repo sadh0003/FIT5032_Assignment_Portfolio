@@ -12,7 +12,7 @@ namespace FIT5032_Week08A.Utils
     public class EmailSender
     {
         // Please use your API KEY here.
-        private const String API_KEY = "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";
+        private const String API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
         public async Task SendAsync(String toEmail, String subject, String contents, String fileLocation, String fileName)
         {

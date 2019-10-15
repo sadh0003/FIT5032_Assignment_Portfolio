@@ -4,13 +4,13 @@
 
 @model IEnumerable<FIT5032_Assignment_Portfolio.Models.Hotel>
 
-    <form>
-        <h3>Filter</h3>
-        @Html.Label("Date") <input type="text" style="width: 90px;" id="date" name="date" value="@ViewBag.date" /> 
-        @Html.Label("Neighbourhood") <input type="text" style="width: 200px;" id="neigh" name="neigh" value="@ViewBag.neighbourhood" />
-        <input type="button" value="Clear Filter" onclick="window.location.href = '/Hotels/Find'" />
-        <br /><input type="button" value="Search" onclick="window.location.href = '/Hotels/Find?date=' + document.getElementById('date').value + '&neigh=' + document.getElementById('neigh').value " />
-    </form>
+<form>
+    <h3>Filter</h3>
+    @Html.Label("Date") <input type="text" style="width: 90px;" id="date" name="date" value="@ViewBag.date" />
+    @Html.Label("Neighbourhood") <input type="text" style="width: 200px;" id="neigh" name="neigh" value="@ViewBag.neighbourhood" />
+    <input type="button" value="Clear Filter" onclick="window.location.href = '/Hotels/Find'" />
+    <br /><input type="button" value="Search" onclick="window.location.href = '/Hotels/Find?date=' + document.getElementById('date').value + '&neigh=' + document.getElementById('neigh').value " />
+</form>
 <br />
 
 <table class="table">
@@ -42,6 +42,13 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
+
+                @foreach (var facility in item.HotelFacilities)
+                {
+
+                    @Html.Label("asdas")
+                }
+
             </td>
             <td>
                 @for (var i = 0; i < item.HotelStar; i++)
