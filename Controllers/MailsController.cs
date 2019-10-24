@@ -16,6 +16,7 @@ using SendGrid.Helpers.Mail;
 
 namespace FIT5032_Assignment_Portfolio.Controllers
 {
+    [Authorize(Roles = "Vendor")]
     public class MailsController : Controller
     {
         private FIT5032_Assignment_ModelContainer db = new FIT5032_Assignment_ModelContainer();
@@ -64,7 +65,29 @@ namespace FIT5032_Assignment_Portfolio.Controllers
             {
                 try
                 {
-                    String toEmail = mail.Receiver;
+                    String toEmail = "";
+
+                    string bulk = Request["bulk"];
+                    if (bulk == null)
+                    {
+                        toEmail = mail.Receiver;
+                    } else
+                    {
+                        string query = "select Email from AspNetUsers";
+                        var emails = context.Database.SqlQuery<string>(query).ToArray();
+                        int count = 0;
+                        foreach (string email in emails)
+                        {
+                            count++;
+
+                            toEmail += email;
+                            if (count < emails.Length)
+                            {
+                                toEmail += ",";
+                            }
+                        }
+                    }
+                    
                     String subject = mail.Subject;
                     String contents = mail.Content;
                     

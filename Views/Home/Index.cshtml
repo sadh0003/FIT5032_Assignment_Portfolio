@@ -2,6 +2,8 @@
     ViewBag.Title = "Home Page";
 }
 
+<script src="~/Scripts/Chart.min.js"></script>
+
 <div class="jumbotron">
     <h1>GoBook</h1>
     <h3>Welcome @ViewBag.Message</h3>
@@ -16,15 +18,8 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <div class="col-md-8">
+        <canvas id="bar-chart" width="800" height="350"></canvas>
     </div>
     <div class="form-horizontal">
         <div class="col-md-4">
@@ -49,3 +44,41 @@
         </div>
     </div>
 </div>
+
+<script>
+    window.onload = function () {
+        // Bar chart
+        var book = [];
+        var array = @Html.Raw(Json.Encode(@ViewBag.bc));
+        for (var i = 0; i < array.length; i++) {
+            book[i] = array[i];
+        }
+
+        var name = [];
+        var array = @Html.Raw(Json.Encode(@ViewBag.name));
+        for (var i = 0; i < array.length; i++) {
+            name[i] = array[i];
+        }
+
+        new Chart(document.getElementById("bar-chart"), {
+            type: 'bar',
+            data: {
+            labels: name,
+                datasets: [
+                    {
+                label: "Book Counts",
+                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                        data: book
+                    }
+                ]
+            },
+            options: {
+            legend: { display: false },
+                title: {
+                display: true,
+                    text: 'Number of bookings per Hotel'
+                }
+            }
+        });
+    };
+</script>

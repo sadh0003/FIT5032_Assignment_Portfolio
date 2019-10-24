@@ -3,13 +3,11 @@
 @{
     ViewBag.Title = "Map";
 }
-lat: @ViewBag.Latitude , lng: @ViewBag.Longitude
-
 
     <body>
         <h3>@Html.DisplayFor(model => model.HotelName)</h3>
         <h4>@Html.DisplayFor(model => model.Description)</h4>
-        
+
         @for (var i = 0; i < ViewBag.Star; i++)
         {
             <img src="~/images/star.png" width="30" />
@@ -17,17 +15,22 @@ lat: @ViewBag.Latitude , lng: @ViewBag.Longitude
         <br />
         <!--The div element for the map -->
         <div id="map"></div>
+        <div>
+            @Html.ActionLink("Back to List", "Find")
+        </div>
         <script>
         // Initialize and add the map
         function initMap() {
-            // The location of Uluru
+            // The location of Monash
             var accom = { lat: @ViewBag.Latitude, lng: @ViewBag.Longitude };
-            // The map, centered at Uluru
+            // The map, centered at Monash
             var map = new google.maps.Map(document.getElementById('map'), { zoom: 20, center: { lat: @ViewBag.Latitude, lng: @ViewBag.Longitude } });
 
-            // The marker, positioned at Uluru
+            // The marker, positioned at the Hotels
             var marker = new google.maps.Marker({ position: accom, title: '@ViewBag.name', map: map });
         }
+
+
         </script>
 
         <script async defer

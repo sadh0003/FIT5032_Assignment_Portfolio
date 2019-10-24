@@ -10,13 +10,14 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
+
+<div class="form-horizontal col-md-6">
     <h4>Hotel</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
-
+    @Html.HiddenFor(model => model.PicName)
+    
     <div class="form-group">
         @Html.LabelFor(model => model.HotelName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -68,7 +69,8 @@
     <div class="form-group">
         @Html.Label("UserId", new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @ViewBag.UserName
+            @*@Html.DropDownList("User")*@
+            @Html.DropDownList("UserId", (SelectList)ViewBag.UserName, " ")
         </div>
     </div>
 
@@ -77,12 +79,35 @@
             <input type="submit" value="Save" class="btn btn-default" />
         </div>
     </div>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+<div class="col-md-6">
+    <div id="map"></div>
 </div>
+
+<script>
+    // Initialize and add the map
+    function initMap() {
+        // The location of Monash
+        var accom = { lat: @ViewBag.Latitude, lng: @ViewBag.Longitude };
+        // The map, centered at Monash
+        var map = new google.maps.Map(document.getElementById('map'), { zoom: 18, center: { lat: @ViewBag.Latitude, lng: @ViewBag.Longitude } });
+
+        // The marker, positioned at the Hotels
+        var marker = new google.maps.Marker({ position: accom, title: 'Select Location', map: map, draggable: true });
+
+        marker.addListener('dragend', function (evt) {
+            document.getElementById('Latitude').value = evt.latLng.lat().toFixed(7);
+            document.getElementById('Longitude').value = evt.latLng.lng().toFixed(7);
+        });
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChuO1H-nJLVKc5-F2tSoxmlnqrTpo08hI&callback=initMap">
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

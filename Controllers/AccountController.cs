@@ -382,8 +382,12 @@ namespace FIT5032_Assignment_Portfolio.Controllers
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                    
                     if (result.Succeeded)
                     {
+                        // add customer role to external login
+                        var result1 = UserManager.AddToRole(user.Id, "Customer");
+
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }

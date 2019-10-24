@@ -137,6 +137,7 @@ namespace FIT5032_Assignment_Portfolio.Controllers
         }
 
         // GET: Hotels
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             string userId = User.Identity.GetUserId();
@@ -207,7 +208,10 @@ namespace FIT5032_Assignment_Portfolio.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.UserName = User.Identity.GetUserName();
+            ViewBag.UserName = new SelectList(context.Users
+                                            .ToList(), "Id", "UserName");
+            ViewBag.Longitude = hotel.Longitude;
+            ViewBag.Latitude = hotel.Latitude;
 
             return View(hotel);
         }
@@ -217,7 +221,7 @@ namespace FIT5032_Assignment_Portfolio.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,HotelName,Description,HotelStar,Longitude,Latitude,UserId,Neighbourhood")] Hotel hotel)
+        public ActionResult Edit([Bind(Include = "Id,HotelName,Description,HotelStar,Longitude,Latitude,UserId,Neighbourhood,PicName")] Hotel hotel)
         {
             if (ModelState.IsValid)
             {

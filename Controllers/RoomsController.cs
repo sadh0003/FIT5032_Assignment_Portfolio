@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity;
 
 namespace FIT5032_Assignment_Portfolio.Controllers
 {
+    [Authorize(Roles = "Vendor")]
     public class RoomsController : Controller
     {
         private FIT5032_Assignment_ModelContainer db = new FIT5032_Assignment_ModelContainer();
@@ -82,7 +83,7 @@ namespace FIT5032_Assignment_Portfolio.Controllers
             return View();
         }
 
-        // GET: UploadImage
+        // GET: UploadImage2
         public ActionResult UploadImage2(int? id)
         {
             if (id == null)
@@ -155,7 +156,7 @@ namespace FIT5032_Assignment_Portfolio.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,RoomName,Description,Availability,Rate,HotelId")] Room room)
+        public ActionResult Edit([Bind(Include = "Id,RoomName,Description,Availability,Rate,HotelId,PicName")] Room room)
         {
             if (ModelState.IsValid)
             {
