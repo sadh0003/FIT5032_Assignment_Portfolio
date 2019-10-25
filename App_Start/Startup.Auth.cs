@@ -60,8 +60,8 @@ namespace FIT5032_Assignment_Portfolio
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "138095953033-0lavuoqgckmldrt9qr2qgrmfpfc6u1k1.apps.googleusercontent.com",
-                ClientSecret = "6zvn2XVeDl45lUnVg6DsuRHg"
+                ClientId = "xxxxxxxxxxxxxxxxxx",
+                ClientSecret = "xxxxxxxxxxxxx"
             });
         }
     }
