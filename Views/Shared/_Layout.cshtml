@@ -83,13 +83,15 @@
             date_input.datepicker(options).datepicker();
             $("#DatePicker").datepicker({
                 format: 'yyyy-mm-dd',
+                autoclose: true
             });
             $("#Date").datepicker({
                 format: 'yyyy-mm-dd',
+                autoclose: true
             });
 
             $("#RoomId").change(function () {
-                $("#RoomImg").attr("src", "/images/picRoom_" + document.getElementById("RoomId").value + ".jpeg")
+                $("#RoomImg").attr("src", "/images/picRoom_" + document.getElementById("RoomId").value + ".jpg")
 
                 $("#Value").val($(this).find("option:selected").val());
             });

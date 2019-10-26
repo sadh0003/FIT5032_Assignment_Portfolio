@@ -182,6 +182,8 @@ namespace FIT5032_Assignment_Portfolio.Controllers
                 , hotelId).FirstOrDefault<string>();
             ViewBag.RoomId = new SelectList(db.Rooms.Where(u => u.HotelId.Equals(hotelId))
                 .ToList(), "Id", "RoomName", "Rate");
+            ViewBag.RoomName = db.Database.SqlQuery<string>("Select RoomName from Rooms where id = {0}"
+                , booking.RoomId).FirstOrDefault<string>();
             ViewBag.UserId = User.Identity.GetUserId();
             ViewBag.UserName = User.Identity.GetUserName();
 
@@ -193,10 +195,10 @@ namespace FIT5032_Assignment_Portfolio.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Review([Bind(Include = "Id,Value,Review,Rating,RoomId,UserId")] Booking booking)
+        public ActionResult Review([Bind(Include = "Id,Date,Value,Review,Rating,RoomId,UserId")] Booking booking)
         {
             if (ModelState.IsValid)
-            {
+            {              
                 string userId = User.Identity.GetUserId();
                 booking.UserId = userId;
                 db.Entry(booking).State = EntityState.Modified;

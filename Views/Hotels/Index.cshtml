@@ -36,7 +36,10 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.HotelStar)
+            @for (var i = 0; i < item.HotelStar; i++)
+            {
+                <img src="~/images/star.png" width="20" />
+            }
         </td>
         <td>
             <img src="~/images/@(item.PicName)" width="240" />

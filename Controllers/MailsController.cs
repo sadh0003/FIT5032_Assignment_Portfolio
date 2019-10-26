@@ -73,7 +73,10 @@ namespace FIT5032_Assignment_Portfolio.Controllers
                         toEmail = mail.Receiver;
                     } else
                     {
-                        string query = "select Email from AspNetUsers";
+                        string query = "select Email from AspNetUsers " +
+                            " JOIN AspNetUserRoles ON AspNetUserRoles.UserId = AspNetUsers.Id " +
+                            " JOIN AspNetRoles ON AspNetRoles.Id = AspNetUserRoles.RoleId " +
+                            " WHERE AspNetRoles.name = 'Customer'";
                         var emails = context.Database.SqlQuery<string>(query).ToArray();
                         int count = 0;
                         foreach (string email in emails)

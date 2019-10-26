@@ -91,7 +91,7 @@
 <script>
     // Initialize and add the map
     function initMap() {
-        // The location of Monash
+        // The center location
         var accom = { lat: @ViewBag.Latitude, lng: @ViewBag.Longitude };
         // The map, centered at Monash
         var map = new google.maps.Map(document.getElementById('map'), { zoom: 18, center: { lat: @ViewBag.Latitude, lng: @ViewBag.Longitude } });

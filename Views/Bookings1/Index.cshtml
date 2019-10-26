@@ -7,9 +7,6 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -48,7 +45,7 @@
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
                 @if (@ViewBag.roles == "Customer")
                 {
-                    @Html.ActionLink("Write Review", "Review", new { id = item.Id })
+                    @Html.ActionLink("Rate & Review", "Review", new { id = item.Id })
                 }
             </td>
         </tr>

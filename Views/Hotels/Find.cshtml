@@ -8,8 +8,8 @@
     <h3>Filter</h3>
     @Html.Label("Date") <input type="text" style="width: 90px;" id="date" name="date" value="@ViewBag.date" />
     @Html.Label("Neighbourhood") <input type="text" style="width: 200px;" id="neigh" name="neigh" value="@ViewBag.neighbourhood" />
-    <input type="button" value="Clear Filter" onclick="window.location.href = '/Hotels/Find'" />
-    <br /><input type="button" value="Search" onclick="window.location.href = '/Hotels/Find?date=' + document.getElementById('date').value + '&neigh=' + document.getElementById('neigh').value " />
+                                 <input type="button" value="Search" onclick="window.location.href = '/Hotels/Find?date=' + document.getElementById('date').value + '&neigh=' + document.getElementById('neigh').value " />
+    <br /><input type="button" value="Clear Filter" onclick="window.location.href = '/Hotels/Find'" />
 </form>
 <br />
 
@@ -42,13 +42,7 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
-
-                @foreach (var facility in item.HotelFacilities)
-                {
-
-                    @Html.Label("asdas")
-                }
-
+                
             </td>
             <td>
                 @for (var i = 0; i < item.HotelStar; i++)
