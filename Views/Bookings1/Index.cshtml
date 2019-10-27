@@ -37,10 +37,12 @@
                 @Html.DisplayFor(modelItem => item.Value)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Rating)
+                @for (var i = 0; i < item.Rating; i++)
+                {
+                    <img src="~/images/star.png" width="15" />
+                }
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
                 @if (@ViewBag.roles == "Customer")
